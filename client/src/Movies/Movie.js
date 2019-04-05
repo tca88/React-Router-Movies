@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
 export default class Movie extends Component {
   constructor(props) {
@@ -9,9 +9,9 @@ export default class Movie extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(props) {
     // change this line to grab the id passed on the URL
-    const id = 1;
+    const id = this.props.match.params.id;
     this.fetchMovie(id);
   }
 
@@ -26,22 +26,22 @@ export default class Movie extends Component {
       });
   };
   // Uncomment this code when you're ready for the stretch problems
-  // componentWillReceiveProps(newProps){
-  //   if(this.props.match.params.id !== newProps.match.params.id){
-  //     this.fetchMovie(newProps.match.params.id);
-  //   }
-  // }
+  componentWillReceiveProps(newProps) {
+    if (this.props.match.params.id !== newProps.match.params.id) {
+      this.fetchMovie(newProps.match.params.id);
+    }
+  }
 
-  // saveMovie = () => {
-  //   const addToSavedList = this.props.addToSavedList;
-  //   addToSavedList(this.state.movie)
-  // }
+  saveMovie = () => {
+    const addToSavedList = this.props.addToSavedList;
+    addToSavedList(this.state.movie);
+  };
 
   render() {
     if (!this.state.movie) {
       return <div>Loading movie information...</div>;
     }
-
+    console.log(this.props);
     const { title, director, metascore, stars } = this.state.movie;
     return (
       <div className="save-wrapper">
@@ -61,7 +61,9 @@ export default class Movie extends Component {
             </div>
           ))}
         </div>
-        <div className="save-button">Save</div>
+        <div onClick={this.saveMovie} className="save-button">
+          Save
+        </div>
       </div>
     );
   }
